@@ -19,3 +19,15 @@ func NewBlock(hash string, txs []*internal.Transaction) *Block {
 func (b *Block) Hash() string {
 	return b.hash
 }
+
+func (b *Block) Number() uint {
+	return b.number
+}
+
+func (b *Block) Txs() []internal.Transaction {
+	var txs []internal.Transaction
+	for _, tx := range b.txs {
+		txs = append(txs, *tx)
+	}
+	return txs
+}

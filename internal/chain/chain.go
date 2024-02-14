@@ -37,9 +37,12 @@ func (c *Chain) Mine(pendingTxs []*internal.Transaction) {
 		hashString += pendingTx.Hash
 	}
 	hash := pow.Proof(c.currentDifficulty, lastBlock.Hash(), hashString)
-	b := block.NewBlock(hash, pendingTxs)
+	// duplicate a new txs list
+	validateTxs := make([]*internal.Transaction, len(pendingTxs))
+	copy(validateTxs, pendingTxs)
+	b := block.NewBlock(hash, validateTxs)
 	c.blocks = append(c.blocks, b)
-	c.txPool.Validate(pendingTxs, c.blockHeight)
+	c.txPool.ValidateAndDeletePending(pendingTxs, c.blockHeight)
 }
 
 func (c *Chain) Start() {

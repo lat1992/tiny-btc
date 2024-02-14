@@ -29,18 +29,15 @@ func (tp *TxPool) AddTransaction(hash, rawTx string) {
 }
 
 func (tp *TxPool) GetPendingTransactions() []*internal.Transaction {
-	// duplicate the pending transaction list.
-	var pendingTxs []*internal.Transaction
-	copy(pendingTxs, tp.pendingTxs)
-	return pendingTxs
+	return tp.pendingTxs
 }
 
-func (tp *TxPool) Validate(txs []*internal.Transaction, blockNumber uint) {
+func (tp *TxPool) ValidateAndDeletePending(txs []*internal.Transaction, blockNumber uint) {
 	for _, tx := range txs {
 		tp.txMap[tx.Hash].Status = "validate"
 		tp.txMap[tx.Hash].BlockNumber = blockNumber
 	}
-	slices.Delete(tp.pendingTxs, 0, len(txs)-1)
+	tp.pendingTxs = slices.Delete(tp.pendingTxs, 0, len(txs))
 }
 
 func (tp *TxPool) GetTx(hash string) *internal.Transaction {

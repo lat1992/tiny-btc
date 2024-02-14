@@ -6,3 +6,9 @@ type Transaction struct {
 	BlockNumber uint
 	Status      string
 }
+
+type Block struct {
+	Number uint
+	Hash   string
+	Txs    []Transaction
+}

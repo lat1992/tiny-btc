@@ -1,7 +1,7 @@
 package services
 
 import (
-	"github.com/lat1992/tiny-btc/internal/block"
+	"github.com/lat1992/tiny-btc/internal"
 	"github.com/lat1992/tiny-btc/internal/chain"
 )
 
@@ -31,10 +31,24 @@ func (s *ChainService) GetBlockHeight() uint {
 	return s.chain.GetBlockHeight()
 }
 
-func (s *ChainService) GetBlocks() []*block.Block {
-	return s.GetBlocks()
+func (s *ChainService) GetBlocks() []internal.Block {
+	blocks := s.chain.GetBlocks()
+	var bs []internal.Block
+	for _, b := range blocks {
+		bs = append(bs, internal.Block{
+			Hash:   b.Hash(),
+			Number: b.Number(),
+			Txs:    b.Txs(),
+		})
+	}
+	return bs
 }
 
-func (s *ChainService) GetBlock(blockNumber uint) *block.Block {
-	return s.GetBlock(blockNumber)
+func (s *ChainService) GetBlock(blockNumber uint) internal.Block {
+	b := s.chain.GetBlock(blockNumber)
+	return internal.Block{
+		Hash:   b.Hash(),
+		Number: b.Number(),
+		Txs:    b.Txs(),
+	}
 }
