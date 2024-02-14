@@ -2,6 +2,7 @@ package txPool
 
 import (
 	"slices"
+	"sync"
 
 	"github.com/lat1992/tiny-btc/internal"
 )
@@ -9,6 +10,7 @@ import (
 type TxPool struct {
 	pendingTxs []*internal.Transaction
 	txMap      map[string]*internal.Transaction
+	mapLock    sync.RWMutex
 }
 
 func NewTxPool() *TxPool {
@@ -33,10 +35,12 @@ func (tp *TxPool) GetPendingTransactions() []*internal.Transaction {
 }
 
 func (tp *TxPool) ValidateAndDeletePending(txs []*internal.Transaction, blockNumber uint) {
+	tp.mapLock.Lock()
 	for _, tx := range txs {
 		tp.txMap[tx.Hash].Status = "validate"
 		tp.txMap[tx.Hash].BlockNumber = blockNumber
 	}
+	tp.mapLock.Unlock()
 	tp.pendingTxs = slices.Delete(tp.pendingTxs, 0, len(txs))
 }
 
