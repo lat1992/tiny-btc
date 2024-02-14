@@ -1,0 +1,8 @@
+POST http://localhost:8080/sendTransaction
+Content-Type: application/json
+
+{
+    "rawTx": "this is a fake raw tx data"
+}
+
+###
