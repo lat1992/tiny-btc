@@ -10,12 +10,14 @@ import (
 )
 
 func main() {
+	// init
 	tp := txPool.NewTxPool()
 	ts := services.NewTransactionService(tp)
 	c := chain.NewChain(tp)
 	cs := services.NewChainService(c)
 	router := handlers.GetRouter(cs, ts)
 
+	// start
 	go c.Start()
 	if err := router.Run(":8080"); err != nil {
 		slog.Error("error when router start", err)

@@ -32,16 +32,23 @@ func NewChain(tp *txPool.TxPool) *Chain {
 func (c *Chain) Mine(pendingTxs []*internal.Transaction) {
 	c.blockHeight = uint(len(c.blocks))
 	lastBlock := c.blocks[c.blockHeight-1]
+
 	var hashString string
 	for _, pendingTx := range pendingTxs {
 		hashString += pendingTx.Hash
 	}
+
+	// POW
 	hash := pow.Proof(c.currentDifficulty, lastBlock.Hash(), hashString)
+
 	// duplicate a new txs list
 	validateTxs := make([]*internal.Transaction, len(pendingTxs))
 	copy(validateTxs, pendingTxs)
+
+	// create new block
 	b := block.NewBlock(c.blockHeight, hash, validateTxs)
 	c.blocks = append(c.blocks, b)
+	// Finalize
 	c.txPool.ValidateAndDeletePending(pendingTxs, c.blockHeight)
 }
 

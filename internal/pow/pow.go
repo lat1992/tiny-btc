@@ -38,9 +38,12 @@ func randString(length uint) string {
 	return string(bytes)
 }
 
+// Proof is the algorithm for pow, the difficulty will change according to how fast a block will be mine.
 func Proof(difficulty uint, prevHash string, txsHashString string) string {
 	blockHash := ""
+	// count zero from the beginning of hash
 	for !countZero(difficulty, blockHash) {
+		// double sha254 the previous hash, txs hashes and a random string
 		blockHash = doubleSHA256([]byte(prevHash + txsHashString + randString(8)))
 	}
 	return blockHash
