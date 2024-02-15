@@ -20,7 +20,7 @@ type Chain struct {
 
 func NewChain(tp *txPool.TxPool) *Chain {
 	hash := pow.Proof(0, "genesis", "")
-	b := block.NewBlock(hash, []*internal.Transaction{})
+	b := block.NewBlock(0, hash, []*internal.Transaction{})
 	return &Chain{
 		blocks:            []*block.Block{b},
 		currentDifficulty: 1,
@@ -40,7 +40,7 @@ func (c *Chain) Mine(pendingTxs []*internal.Transaction) {
 	// duplicate a new txs list
 	validateTxs := make([]*internal.Transaction, len(pendingTxs))
 	copy(validateTxs, pendingTxs)
-	b := block.NewBlock(hash, validateTxs)
+	b := block.NewBlock(c.blockHeight, hash, validateTxs)
 	c.blocks = append(c.blocks, b)
 	c.txPool.ValidateAndDeletePending(pendingTxs, c.blockHeight)
 }

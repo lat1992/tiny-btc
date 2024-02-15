@@ -21,7 +21,12 @@ func SendTransaction(s services.ITransactionService) func(c *gin.Context) {
 			})
 			return
 		}
-		s.SendTransaction(request.Hash, request.RawTx)
+		if err := s.SendTransaction(request.Hash, request.RawTx); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
 		c.JSON(http.StatusOK, gin.H{
 			"message": "transaction sent",
 		})

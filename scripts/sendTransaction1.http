@@ -7,3 +7,43 @@ Content-Type: application/json
 }
 
 ###
+
+POST http://localhost:8080/sendTransaction
+Content-Type: application/json
+
+{
+  "hash": "fakehash2",
+  "rawTx": "this is a fake raw tx data"
+}
+
+###
+
+POST http://localhost:8080/sendTransaction
+Content-Type: application/json
+
+{
+  "hash": "fakehash3",
+  "rawTx": "this is a fake raw tx data"
+}
+
+###
+
+POST http://localhost:8080/sendTransaction
+Content-Type: application/json
+
+{
+  "hash": "fakehash4",
+  "rawTx": "this is a fake raw tx data"
+}
+
+###
+
+POST http://localhost:8080/sendTransaction
+Content-Type: application/json
+
+{
+  "hash": "fakehash5",
+  "rawTx": "this is a fake raw tx data"
+}
+
+###

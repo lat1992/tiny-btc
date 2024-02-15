@@ -1,6 +1,7 @@
 package txPool
 
 import (
+	"fmt"
 	"slices"
 	"sync"
 
@@ -20,7 +21,11 @@ func NewTxPool() *TxPool {
 	}
 }
 
-func (tp *TxPool) AddTransaction(hash, rawTx string) {
+func (tp *TxPool) AddTransaction(hash, rawTx string) error {
+	if _, exist := tp.txMap[hash]; exist {
+		return fmt.Errorf("tx already sent")
+	}
+
 	tx := internal.Transaction{
 		Hash:   hash,
 		RawTx:  rawTx,
@@ -28,6 +33,7 @@ func (tp *TxPool) AddTransaction(hash, rawTx string) {
 	}
 	tp.txMap[hash] = &tx
 	tp.pendingTxs = append(tp.pendingTxs, &tx)
+	return nil
 }
 
 func (tp *TxPool) GetPendingTransactions() []*internal.Transaction {

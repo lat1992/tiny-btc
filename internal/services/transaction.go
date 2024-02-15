@@ -15,8 +15,8 @@ func NewTransactionService(tp *txPool.TxPool) *TransactionService {
 	}
 }
 
-func (s *TransactionService) SendTransaction(hash, tx string) {
-	s.txPool.AddTransaction(hash, tx)
+func (s *TransactionService) SendTransaction(hash, tx string) error {
+	return s.txPool.AddTransaction(hash, tx)
 }
 
 func (s *TransactionService) GetTransaction(hash string) *internal.Transaction {

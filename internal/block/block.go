@@ -8,10 +8,11 @@ type Block struct {
 	txs    []*internal.Transaction
 }
 
-func NewBlock(hash string, txs []*internal.Transaction) *Block {
+func NewBlock(number uint, hash string, txs []*internal.Transaction) *Block {
 	newBlock := Block{
-		hash: hash,
-		txs:  txs,
+		number: number,
+		hash:   hash,
+		txs:    txs,
 	}
 	return &newBlock
 }

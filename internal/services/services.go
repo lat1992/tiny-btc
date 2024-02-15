@@ -5,7 +5,7 @@ import (
 )
 
 type ITransactionService interface {
-	SendTransaction(hash, tx string)
+	SendTransaction(hash, tx string) error
 	GetTransaction(hash string) *internal.Transaction
 }
 
